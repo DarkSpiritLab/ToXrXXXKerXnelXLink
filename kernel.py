@@ -1,5 +1,5 @@
 from collections import defaultdict
-# import mysql.connector
+import mysql.connector
 import datetime
 
 import json
@@ -9,10 +9,10 @@ query = ("select my_ip,next_ip,next_port,prev_circ_id,next_circ_id,direction,str
          "where time between %s and %s ")
 
 
-# config={}
-# with open("config") as f:
-#     t=f.readlines()
-#     config=json.loads(t)
+config={}
+with open("config") as f:
+    t=f.readlines()
+    config=json.loads(t)
 
 
 # id,my_ip,next_ip,next_port,prev_circ_id,next_circ_id,direction,stream_id,is_origin
@@ -44,29 +44,29 @@ def readFromDB(offset = 30):
     relay = defaultdict(dict)
     origin = defaultdict(dict)
 
-    #     time_start="(select date_sub( ( select now() ), interval %d minute ))"%offset
-    #     time_end="( select now() )"
+    time_start="(select date_sub( ( select now() ), interval %d minute ))"%offset
+    time_end="( select now() )"
 
-    #     cnx = mysql.connector.connect(**config)
-    #     cursor=cnx.cursor()
+    cnx = mysql.connector.connect(**config)
+    cursor=cnx.cursor()
 
-    #     cursor.execute(query,(time_start,time_end))
+    cursor.execute(query,(time_start,time_end))
 
-    #     for (my_ip,next_ip,next_port,prev_circ_id,next_circ_id,direction,stream_id,is_origin) in cursor:
-    #         t=link(my_ip,next_ip,next_port,prev_circ_id,next_circ_id,direction,stream_id,is_origin)
-    #         if(is_origin):
-    #             origin[t.my_ip][t.prev_circ_id]=t
-    #         else:
-    #             relay[t.my_ip][t.prev_circ_id]=t
+    for (my_ip,next_ip,next_port,prev_circ_id,next_circ_id,direction,stream_id,is_origin) in cursor:
+        t=link(my_ip,next_ip,next_port,prev_circ_id,next_circ_id,direction,stream_id,is_origin)
+        if(is_origin):
+            origin[t.my_ip][t.prev_circ_id]=t
+        else:
+            relay[t.my_ip][t.prev_circ_id]=t
     # as test
 
-    a = link("10.0.0.1", "10.0.0.3", 600, "12", "34", 1, 123, True)
-    b = link("10.0.0.3", "10.0.0.4", 700, "34", "56", 2, 123)
-    c = link("10.0.0.4", "10.0.0.7", 999, "56", "11111", 3, 123)
-    origin[a.my_ip] = {a.prev_circ_id: a}
-    relay[b.my_ip] = {b.prev_circ_id: b}
-    relay[c.my_ip] = {c.prev_circ_id: c}
-    #     cnx.close()
+#     a = link("10.0.0.1", "10.0.0.3", 600, "12", "34", 1, 123, True)
+#     b = link("10.0.0.3", "10.0.0.4", 700, "34", "56", 2, 123)
+#     c = link("10.0.0.4", "10.0.0.7", 999, "56", "11111", 3, 123)
+#     origin[a.my_ip] = {a.prev_circ_id: a}
+#     relay[b.my_ip] = {b.prev_circ_id: b}
+#     relay[c.my_ip] = {c.prev_circ_id: c}
+    cnx.close()
     return origin, relay
 
 
