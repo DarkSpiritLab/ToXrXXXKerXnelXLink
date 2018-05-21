@@ -10,12 +10,12 @@ import json
 # In[17]:
 
 
-# id,my_ip,next_ip,next_port,prev_circ_id,next_circ_id,direction,stream_id,is_origin
+# (id,) my_ip,next_ip,next_port,prev_circ_id,next_circ_id,direction,stream_id,is_origin
 class link:
-    def __init__(self,prev_circ_id,next_circ_id,id,my_ip,next_ip,next_port,direction,is_origin=False,stream_id=0):
+    def __init__(self,prev_circ_id,next_circ_id,my_ip,next_ip,next_port,direction,is_origin=False,stream_id=0):
         self.prev_circ_id=prev_circ_id
         self.next_circ_id=next_circ_id
-        self.id=id
+        # self.id=id
         self.my_ip=my_ip
         self.next_ip=next_ip
         self.next_port=next_port
