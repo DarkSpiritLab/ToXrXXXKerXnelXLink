@@ -1,3 +1,9 @@
+
+# coding: utf-8
+
+# In[34]:
+
+
 from collections import defaultdict
 import mysql.connector
 import datetime
@@ -122,3 +128,4 @@ def linkAll():
 if __name__ == "__main__":
     a = linkAll()
     printFixLinks(a)
+
